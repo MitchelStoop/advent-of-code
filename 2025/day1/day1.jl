@@ -12,6 +12,7 @@ end
 
 my_func()
 
+# First attempt programming below
 function read_in_data()
     data = Matrix(CSV.read("2025/day1/data_day1.txt", DataFrame, delim=',', comment="#", header=false))
     return data
@@ -81,5 +82,5 @@ function vault2_calc()
     println("The number 0 has been passed $n_zero amount of times")
 end
 
-# vault1_calc()
-# vault2_calc()
+vault1_calc()
+vault2_calc()
