@@ -1,5 +1,6 @@
 using DataFrames
 using CSV
+using BenchmarkTools
 
 function day2_calc()
     invalid_ids_p1, invalid_ids_p2, data = 0, 0, Matrix(CSV.read("2025/day2/data_day2.txt", DataFrame, delim=',', comment="#", header=false))
@@ -9,7 +10,7 @@ function day2_calc()
             if iseven(ndigits(n_int)) && string(n_int)[1:Int64(length(string(n_int))/2)]^2 == string(n_int)
                 invalid_ids_p1 += n_int
             end
-            for n_int_i in range(1, length(string(n_int))-1, step=1)
+            for n_int_i in range(1, Int64(floor(length(string(n_int))/2)), step=1)
                 if string(n_int)[1:n_int_i]^Int64(div(length(string(n_int)),length(string(n_int)[1:n_int_i]))) == string(n_int)
                     invalid_ids_p2 += n_int
                     break
@@ -17,8 +18,9 @@ function day2_calc()
             end
         end
     end
-    println("Part 1: The sum of all invalid IDs is equal to $invalid_ids_p1")
-    println("Part 2: The sum of the invalid IDs with these new rules is equal to $invalid_ids_p2")
+    return invalid_ids_p1, invalid_ids_p2
 end
 
-day2_calc()
+invalid_ids_p1, invalid_ids_p2 = @btime day2_calc()
+println("Part 1: The sum of all invalid IDs is equal to $invalid_ids_p1")
+println("Part 2: The sum of the invalid IDs with these new rules is equal to $invalid_ids_p2")
