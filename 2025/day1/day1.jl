@@ -1,9 +1,13 @@
 # L or R is no longer needed after using symmetry
 # eg. going L250 from 20 (-230) is the same as R250 from 100-20=80 (330)
 # dial value needs correction after (-230 -> 70) and (330 -> 30 -> 70 correction)
-function day1_2025()
-    lines = readlines("advent-of-code/2025/day1/data_day1.txt")
 
+function read_data()
+    lines = readlines("2025/day1/data_day1.txt")
+    return lines
+end
+
+function day1_2025(lines::Vector{String})
     # initial values and setup
     n_vault = 50
     n_zero = 0 # part 1
@@ -29,6 +33,8 @@ function day1_2025()
     return n_zero, n_zero_passing
 end
 
-n_zero, n_zero_passing = day1_2025()
+lines = read_data()
+
+n_zero, n_zero_passing = @btime day1_2025(lines)
 println("Number of times the dial stops exactly at 0: $n_zero")
 println("Number of times the dial passed 0: $n_zero_passing")
