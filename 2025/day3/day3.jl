@@ -17,7 +17,9 @@ function day3_2025(n_battery::Int64, lines::Vector{String})
         batt_idx_max = 0
         batt_n = ""
 
+        # reverse range so we start with the largest index
         for i_batt in range(n_battery-1, 0, step=-1)
+            # index and value of the largest battery within the allowed range
             batt_idx_max += argmax(int_arr[batt_idx_max + 1 : end - i_batt])
             batt_n *= int_arr[batt_idx_max]
         end
