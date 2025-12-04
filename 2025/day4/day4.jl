@@ -1,8 +1,11 @@
 using BenchmarkTools
 
 function read_data()
+    # makes a matrix of the individual characters
     lines = map(collect, readlines("2025/day4/data_day4.txt"))
+    # puts the characters in a grid and orients as we see it
     grid = permutedims(hcat(lines...))
+    # binary replacement
     grid = replace(grid, '@' => 1)
     grid = replace(grid, '.' => 0)
     return grid
@@ -21,6 +24,7 @@ function day4_2025()
     n_remove_iter1 = 0
     n_remove_total = 0
     removing = true
+
     while removing
         n_iter += 1
 
@@ -32,22 +36,28 @@ function day4_2025()
                 if i == 0 && j == 0
                     continue
                 end
+                # add matrix in eight possible configurations
                 n_adj[2+i : end-1+i, 2+j : end-1+j] += data
             end
         end
+        # edges of the matrix are not needed
         n_data = n_adj[2 : end-1, 2 : end-1]
+
+        # remove rolls
         n_remove = length(n_data[n_data .< 4 .&& data .== 1])
         n_remove_total += n_remove
         data[n_data .< 4] .= 0
-        if n_remove == 0
-            removing = false
-        end
+        # counter for part 1
         if n_iter == 1
             n_remove_iter1 = n_remove
+        end
+        if n_remove == 0
+            removing = false
         end
     end
     return n_remove_iter1, n_remove_total
 end
+
 function day4_2025_v2()
     data = read_data()
 
@@ -72,6 +82,7 @@ function day4_2025_v2()
                 if data[i,j] == 0
                     continue
                 end
+                # the eight surrounding rolls
                 if i - 1 >= 1 && data[i-1,j] == 1
                     n_adj_rolls += 1
                 end
@@ -99,12 +110,19 @@ function day4_2025_v2()
                 if n_adj_rolls < 4
                     removing = true
                     n_remove_total += 1
-                    data[i,j] = 0
+                    # don't delete them for part 1
+                    if n_iter > 1
+                        data[i,j] = 0
+                    end
                 end
             end
         end
+        # counter for part 1
         if n_iter == 1
             n_iter1 = n_remove_total
+            
+            # reset for part 2
+            n_remove_total = 0
         end
     end
     return n_iter1, n_remove_total
