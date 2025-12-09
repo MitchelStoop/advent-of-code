@@ -27,6 +27,7 @@ function day8_2025()
 
     dist = sort(dist)
 
+    
     k = 0
     while length(junctions[1]) != size(coords)[1]
         k += 1
